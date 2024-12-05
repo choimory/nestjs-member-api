@@ -73,29 +73,29 @@
 # 엔티티
 
 - Member 회원 기본정보
-    - TSID PK
-    - EMAIL UK 이메일
-    - PASSWORD 비밀번호
-    - NICKNAME UK 닉네임
-    - PROFILE 소개글
-    - CREATED_AT
-    - MODIFIED_AT
-    - DELETED AT
+  - TSID PK
+  - EMAIL UK 이메일
+  - PASSWORD 비밀번호
+  - NICKNAME UK 닉네임
+  - PROFILE 소개글
+  - CREATED_AT
+  - MODIFIED_AT
+  - DELETED AT
 - MemberImage 회원 프로필, 배경사진
 - MemberAuthority 회원 권한
 - MemberSuspension 회원 정지기록
 - MemberGuestbook 회원 방명록(회원에 대한 댓글, 계층형 구조)
-    - TSID PK
-    - RECEIVER_ID FK
-    - WRITER_ID FK
+  - TSID PK
+  - RECEIVER_ID FK
+  - WRITER_ID FK
 - MemberMemo 회원 개인 메모장 (간단, 유연한 mongodb 메모. 카테고리와 태그 맘대로 추가 가능)
-    - TSID PK
-    - MEMBER_ID
-    - TITLE
-    - CONTENT
-    - 동적 카테고리
-    - 동적 태그
+  - TSID PK
+  - MEMBER_ID
+  - TITLE
+  - CONTENT
+  - 동적 카테고리
+  - 동적 태그
 - Follow 회원 팔로우 (Member간 다대다의 끼인 테이블)
-    - TSID PK
-    - FOLLOWER_ID FK
-    - FOLLOWEE_ID FK
+  - TSID PK
+  - FOLLOWER_ID FK
+  - FOLLOWEE_ID FK
