@@ -1,73 +1,102 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 보안
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+- 회원 가입 및 로그인 패스워드 암호화
+- bcrypt
+- CORS
+- nest.js jwt
+- OAuth2
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# 권한
 
-## Description
+- 회원 권한별 접근처리
+- nest.js auth
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# 타입
 
-## Installation
+- 회원 권한
+- 이미지 타입
+- Java, Kotlin - enum
+- TS - union(as const) type 권장
 
-```bash
-$ npm install
-```
+# 파일 입출력, 스토리지, CDN
 
-## Running the app
+- 회원 프로필 사진으로 파일 업로드/다운로드 구현
+- 해당 파일 스토리지 저장
+- CDN 처리
 
-```bash
-# development
-$ npm run start
+# 이메일 인증
 
-# watch mode
-$ npm run start:dev
+- 회원가입 인증메일
+- 인증번호를 Redis에 TTL(time to live)걸어서 저장시키면 시간내에 안올시 세션 죽음
 
-# production mode
-$ npm run start:prod
-```
+# 배치
 
-## Test
+- 이용정지회원 정지해제 배치처리
 
-```bash
-# unit tests
-$ npm run test
+# 연관 관계
 
-# e2e tests
-$ npm run test:e2e
+- 1:1 - 회원 추가정보
+- 1:N, N:1 - 회원 이미지
+- N:N - 회원 팔로우, 게시물 좋아요
 
-# test coverage
-$ npm run test:cov
-```
+# 계층형 테이블
 
-## Support
+- 회원 방명록, 게시물 댓글
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# 복합키 엔티티
 
-## Stay in touch
+-
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# Redis 세션
 
-## License
+- 캐싱
+- 이메일, OTP 인증번호 일정시간 저장
+- 로그인 실패횟수 IP 저장
+- 활동이력 저장
 
-Nest is [MIT licensed](LICENSE).
+# MongoDB
+
+- 회원 개인 메모
+
+# 웹소켓
+
+- 채팅
+
+# 폴링
+
+- 알림
+
+# 그 외
+
+- 회원 로그인 세션 관리를 Redis로 할 수도 있을 것 같지만 일단 토큰으로
+- 식별자로 tsid 사용
+
+# 엔티티
+
+- Member 회원 기본정보
+    - TSID PK
+    - EMAIL UK 이메일
+    - PASSWORD 비밀번호
+    - NICKNAME UK 닉네임
+    - PROFILE 소개글
+    - CREATED_AT
+    - MODIFIED_AT
+    - DELETED AT
+- MemberImage 회원 프로필, 배경사진
+- MemberAuthority 회원 권한
+- MemberSuspension 회원 정지기록
+- MemberGuestbook 회원 방명록(회원에 대한 댓글, 계층형 구조)
+    - TSID PK
+    - RECEIVER_ID FK
+    - WRITER_ID FK
+- MemberMemo 회원 개인 메모장 (간단, 유연한 mongodb 메모. 카테고리와 태그 맘대로 추가 가능)
+    - TSID PK
+    - MEMBER_ID
+    - TITLE
+    - CONTENT
+    - 동적 카테고리
+    - 동적 태그
+- Follow 회원 팔로우 (Member간 다대다의 끼인 테이블)
+    - TSID PK
+    - FOLLOWER_ID FK
+    - FOLLOWEE_ID FK
