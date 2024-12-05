@@ -15,7 +15,6 @@
 
 - 회원 권한
 - 이미지 타입
-- Java, Kotlin - enum
 - TS - union(as const) type 권장
 
 # 파일 입출력, 스토리지, CDN
