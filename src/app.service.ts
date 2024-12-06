@@ -8,10 +8,10 @@ export class AppService {
   getHello(): string {
     return (
       'Hello World! - ' +
-      'PROFILE:' +
-      this.configService.get('PROFILE') +
-      ', PORT:' +
-      this.configService.get('PORT')
+      'NODE_ENV: ' +
+      process.env.NODE_ENV +
+      ', PORT: ' +
+      process.env.PORT
     );
   }
 }
