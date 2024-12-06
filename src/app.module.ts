@@ -34,14 +34,14 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-op
     } as ConfigModuleOptions),
 
     TypeOrmModule.forRoot({
-      type: /*process.env.DB_TYPE*/ 'postgres',
+      type: process.env.DB_TYPE,
       host: process.env.DB_HOST, //'localhost',
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USERNAME, //'choimory',
       password: process.env.DB_PASSWORD, //'asdqwe123',
       database: process.env.DB_DATABASE, //'choimory',
       schema: process.env.DB_SCHEMA, //'member_api',
-      synchronize: process.env.NODE_ENV === 'dev',
+      synchronize: process.env.NODE_ENV === 'local',
     } as TypeOrmModuleOptions),
   ],
   controllers: [AppController],
