@@ -12,12 +12,13 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-op
   imports: [
     MemberModule,
     ConfigModule.forRoot({
-      // NODE_ENV에 따라 파일 로드
+      // 실행할 .env 파일을 지정
+      // 실행 명령어로 전달받은 NODE_ENV 값으로 파일명을 구분하여 해당 실행환경 로드
       envFilePath: process.env.NODE_ENV
         ? `.env.${process.env.NODE_ENV}`
         : '.env',
 
-      //전역변수 설정
+      //ConfigModule 전역 설정
       isGlobal: true,
 
       //.env 검증
@@ -35,12 +36,12 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-op
 
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE,
-      host: process.env.DB_HOST, //'localhost',
+      host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
-      username: process.env.DB_USERNAME, //'choimory',
-      password: process.env.DB_PASSWORD, //'asdqwe123',
-      database: process.env.DB_DATABASE, //'choimory',
-      schema: process.env.DB_SCHEMA, //'member_api',
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      schema: process.env.DB_SCHEMA,
       synchronize: process.env.NODE_ENV === 'local',
     } as TypeOrmModuleOptions),
   ],
