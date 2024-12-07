@@ -18,10 +18,10 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-op
         ? `.env.${process.env.NODE_ENV}`
         : '.env',
 
-      //ConfigModule 전역 설정
+      // ConfigModule 전역 설정
       isGlobal: true,
 
-      //.env 검증
+      // Joi를 이용해 .env 값들을 검증
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('local', 'dev', 'prod').required(),
         PORT: Joi.number().port().required(),
@@ -34,6 +34,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-op
       }),
     } as ConfigModuleOptions),
 
+    // TypeORM 설정
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE,
       host: process.env.DB_HOST,
