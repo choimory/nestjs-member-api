@@ -1,32 +1,46 @@
+# stacks
+
+- Node 22
+- Nest.js
+- Nest.js/config
+- TypeORM/pg
+- Cross-env
+- Joi
+- Js-joda
+
+# 개요
+
+- 간단한 회원 SNS로 다양한 기능 구현
+
 # 보안
 
 - 회원 가입 및 로그인 패스워드 암호화
 - bcrypt
+- JWT
 - CORS
-- nest.js jwt
 - OAuth2
 
 # 권한
 
 - 회원 권한별 접근처리
-- nest.js auth
+- Nest.js auth, passport
 
 # 타입
 
-- 회원 권한
+- 회원 타입
 - 이미지 타입
-- TS - union(as const) type 권장
+- enum보단 union(as const) type 권장
 
 # 파일 입출력, 스토리지, CDN
 
-- 회원 프로필 사진으로 파일 업로드/다운로드 구현
-- 해당 파일 스토리지 저장
-- CDN 처리
+- 파일 업로드/다운로드
+- 외부 스토리지 저장
+- CDN
 
 # 이메일 인증
 
 - 회원가입 인증메일
-- 인증번호를 Redis에 TTL(time to live)걸어서 저장시키면 시간내에 안올시 세션 죽음
+- 인증번호 Redis에 TTL(time to live) 저장
 
 # 배치
 
@@ -34,13 +48,14 @@
 
 # 연관 관계
 
-- 1:1 - 회원 추가정보
-- 1:N, N:1 - 회원 이미지
+- 1:1 - 회원 권한
+- 1:N, N:1 - 회원 정지내역, 포스팅 이미지
 - N:N - 회원 팔로우, 게시물 좋아요
 
 # 계층형 테이블
 
-- 회원 방명록, 게시물 댓글
+- ~~회원 방명록~~
+- 게시물 댓글
 
 # 복합키 엔티티
 
@@ -55,7 +70,7 @@
 
 # MongoDB
 
-- 회원 개인 메모
+- TODO
 
 # 웹소켓
 
@@ -72,30 +87,70 @@
 
 # 엔티티
 
-- Member 회원 기본정보
+- Member - 회원 기본정보
   - TSID PK
   - EMAIL UK 이메일
-  - PASSWORD 비밀번호
   - NICKNAME UK 닉네임
-  - PROFILE 소개글
+  - PASSWORD 비밀번호
+  - IMAGE 프로필 사진
+  - INTRODUCE 소개글
   - CREATED_AT
   - MODIFIED_AT
   - DELETED AT
-- MemberImage 회원 프로필, 배경사진
-- MemberAuthority 회원 권한
-- MemberSuspension 회원 정지기록
-- MemberGuestbook 회원 방명록(회원에 대한 댓글, 계층형 구조)
+- MemberAuthority - 회원 권한 / 1:1
   - TSID PK
-  - RECEIVER_ID FK
-  - WRITER_ID FK
-- MemberMemo 회원 개인 메모장 (간단, 유연한 mongodb 메모. 카테고리와 태그 맘대로 추가 가능)
+  - MEMBER_ID FK
+  - LEVEL (enum MEMBER, ADMIN)
+  - CREATED_AT
+  - MODIFIED_AT
+  - DELETED AT
+- MemberSuspension - 회원 정지기록 / 1:N
   - TSID PK
+  - MEMBER_ID FK
+  - REASON
+  - SUSPENDED_AT
+  - SUSPENDED_TO
+  - CREATED_AT
+  - MODIFIED_AT
+  - DELETED_AT
+- Follow - Member, Member의 끼인 테이블 / N:N
+  - TSID PK
+  - FOLLOWER_ID
+  - FOLLOWEE_ID
+- ~~Block - Member, Member의 끼인 테이블 / N:N~~
+- Article - 게시물
+  - TSID PK
+  - MEMBER_ID FK
+  - TITLE 제목
+  - CONTENT 내용
+  - CREATED_AT
+  - MODIFIED_AT
+  - DELETED_AT
+- ArticleImage - 게시물 이미지 / 1:N
+  - TSID PK
+  - ARTICLE_ID FK
+  - TYPE (enum THUMBNAIL, CONTENT..) 이미지 타입
+  - ORIGINAL_NAME 원본 파일명
+  - NAME 파일명
+  - PATH 경로
+  - SIZE 크기
+  - RESIZE_NAME 리사이즈 파일명
+  - RESIZE_PATH 리사이즈 파일 경로
+  - RESIZE_SIZE 리사이즈 파일 사이즈
+  - CREATED_AT
+  - MODIFIED_AT
+  - DELETED_AT
+- ArticleComment - 게시물 댓글 / 계층형 / 1:N
+  - TSID
   - MEMBER_ID
+  - PARENT_ID
   - TITLE
   - CONTENT
-  - 동적 카테고리
-  - 동적 태그
-- Follow 회원 팔로우 (Member간 다대다의 끼인 테이블)
+- Like - 게시물 좋아요 / Member,Article의 끼인 테이블 / N:N
   - TSID PK
-  - FOLLOWER_ID FK
-  - FOLLOWEE_ID FK
+  - MEMBER ID FK
+  - ARTICLE ID FK
+  - CREATED_AT
+  - MODIFIED_AT
+  - DELETED_AT
+- Todo - 개인 TODO / MongoDB
