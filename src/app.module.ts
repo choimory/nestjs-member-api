@@ -43,6 +43,8 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-op
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       schema: process.env.DB_SCHEMA,
+      autoLoadEntities: true,
+      logging: true,
       synchronize: process.env.NODE_ENV === 'local',
     } as TypeOrmModuleOptions),
   ],
