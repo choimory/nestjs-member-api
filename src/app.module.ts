@@ -44,7 +44,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-op
       database: process.env.DB_DATABASE,
       schema: process.env.DB_SCHEMA,
       autoLoadEntities: true,
-      logging: true,
+      logging: !(process.env.NODE_ENV === 'prod'),
       synchronize: process.env.NODE_ENV === 'local',
     } as TypeOrmModuleOptions),
   ],
