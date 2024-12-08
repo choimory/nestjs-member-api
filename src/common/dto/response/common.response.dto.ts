@@ -1,7 +1,7 @@
 export class CommonResponseDto {
   code: number;
   message: string;
-  data: any;
+  data?: any;
 
   constructor(code: number, message: string, data: any) {
     this.code = code;
