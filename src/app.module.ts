@@ -7,6 +7,7 @@ import { ConfigModuleOptions } from '@nestjs/config/dist/interfaces/config-modul
 import Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-op
       autoLoadEntities: true,
       logging: !(process.env.NODE_ENV === 'prod'),
       synchronize: process.env.NODE_ENV === 'local',
+      namingStrategy: new SnakeNamingStrategy(),
     } as TypeOrmModuleOptions),
   ],
   controllers: [AppController],
