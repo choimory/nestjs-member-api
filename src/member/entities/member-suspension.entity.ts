@@ -3,12 +3,12 @@ import {
   BeforeInsert,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryColumn,
 } from 'typeorm';
 import { v7 as uuid } from 'uuid';
 import { Member } from './member.entity';
-import { JoinColumn } from 'typeorm/browser';
 
 @Entity()
 export class MemberSuspension extends CommonTime {
