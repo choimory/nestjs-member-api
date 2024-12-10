@@ -1,6 +1,13 @@
-import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { CommonTime } from '../../common/entities/common-time.entity';
 import { v7 as uuid } from 'uuid';
+import { MemberSuspension } from './member-suspension.entity';
 
 @Entity()
 export class Member extends CommonTime {
@@ -22,6 +29,12 @@ export class Member extends CommonTime {
   @Column({ nullable: true })
   introduce: string;
 
+  @OneToMany(
+    () => MemberSuspension,
+    (memberSuspension) => memberSuspension.member,
+  )
+  memberSuspension: MemberSuspension;
+
   constructor(
     createdAt: Date,
     modifiedAt: Date,
@@ -32,6 +45,7 @@ export class Member extends CommonTime {
     password: string,
     image: string,
     introduce: string,
+    memberSuspension: MemberSuspension,
   ) {
     super(createdAt, modifiedAt, deletedAt);
     this.id = id;
@@ -40,6 +54,7 @@ export class Member extends CommonTime {
     this.password = password;
     this.image = image;
     this.introduce = introduce;
+    this.memberSuspension = memberSuspension;
   }
 
   @BeforeInsert()
