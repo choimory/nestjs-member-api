@@ -129,7 +129,7 @@
   - member_id fk
   - reason 사유
   - suspended_at notnull 정지일
-  - suspended_to notnull해지일
+  - suspended_to notnull 해지일
 - Classification 역할(role)
   - id pk
   - name uk 역할명 (enum MEMBER, ADMIN…)
@@ -141,9 +141,9 @@
 - Allowance 권한(permission)
   - id pk
   - action (enum WRITE, MODIFY, DELETE, NO_AD…)
-- PositionAllowance 역할 권한 N:N
-  - position_id pk
-  - alowance_id pk
+- ClassificationAllowance 역할 권한 N:N
+  - classification_id pk
+  - allowance_id pk
   - menu (enum ARTICLE, MEMBER, COMMENT…)
 - Follow 팔로우 회원N:N
   - follower_id pk
@@ -165,7 +165,7 @@
   - resize_name
   - resize_path
   - resize_size
-- ArticleComment 게시글 댓글 1:N hierachy
+- ArticleComment 게시글 댓글 1:N hierarchy
   - id pk
   - article_id fk
   - member_id fk
