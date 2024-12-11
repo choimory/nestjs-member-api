@@ -33,7 +33,7 @@ export class Member extends CommonTime {
     () => MemberSuspension,
     (memberSuspension) => memberSuspension.member,
   )
-  memberSuspension: MemberSuspension;
+  memberSuspension?: MemberSuspension;
 
   constructor(
     createdAt: Date,
@@ -45,7 +45,7 @@ export class Member extends CommonTime {
     password: string,
     image: string,
     introduce: string,
-    memberSuspension: MemberSuspension,
+    memberSuspension?: MemberSuspension,
   ) {
     super(createdAt, modifiedAt, deletedAt);
     this.id = id;
