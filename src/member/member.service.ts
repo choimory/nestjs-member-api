@@ -7,6 +7,7 @@ import { FindAllMemberRequestDto } from './dto/request/find-all.member.request.d
 import { JoinMemberRequestDto } from './dto/request/join.member.request.dto';
 import { UpdateMemberRequestDto } from './dto/request/update.member.request.dto';
 import { CommonResponseDto } from '../common/dto/response/common.response.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class MemberService {
@@ -35,8 +36,27 @@ export class MemberService {
     return;
   }
 
-  async join(payload: JoinMemberRequestDto) {
-    return;
+  async join(payload: JoinMemberRequestDto): Promise<CommonResponseDto> {
+    // bcrypt
+    const hashed: string = await bcrypt.hash(
+      payload.password,
+      await bcrypt.genSalt(),
+    );
+
+    // payload to entity
+    const member: Member = new Member(payload.email, payload.nickname, hashed);
+
+    // transaction and save
+    return await this.dataSource.transaction(async (manager) => {
+      const result: Member = await manager.save(member);
+
+      // return
+      return new CommonResponseDto(
+        HttpStatus.CREATED,
+        HttpStatus[HttpStatus.CREATED],
+        { id: result.id, nickname: result.nickname, email: result.email },
+      );
+    });
   }
 
   async update(id: string, payload: UpdateMemberRequestDto) {

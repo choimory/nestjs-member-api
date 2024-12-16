@@ -34,7 +34,7 @@ export class MemberController {
 
   @Post()
   async join(@Body() payload: JoinMemberRequestDto) {
-    return;
+    return this.memberService.join(payload);
   }
 
   @Put()
