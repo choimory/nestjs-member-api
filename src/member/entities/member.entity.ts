@@ -12,7 +12,7 @@ import { MemberSuspension } from './member-suspension.entity';
 @Entity()
 export class Member extends CommonTime {
   @PrimaryColumn('uuid')
-  id: string;
+  id?: string;
 
   @Column({ unique: true, nullable: false })
   email: string;
@@ -24,10 +24,10 @@ export class Member extends CommonTime {
   password: string;
 
   @Column({ nullable: true })
-  image: string;
+  image?: string;
 
   @Column({ nullable: true })
-  introduce: string;
+  introduce?: string;
 
   @OneToMany(
     () => MemberSuspension,
@@ -36,16 +36,16 @@ export class Member extends CommonTime {
   memberSuspension?: MemberSuspension;
 
   constructor(
-    createdAt: Date,
-    modifiedAt: Date,
-    deletedAt: Date,
-    id: string,
     email: string,
     nickname: string,
     password: string,
-    image: string,
-    introduce: string,
+    id?: string,
+    image?: string,
+    introduce?: string,
     memberSuspension?: MemberSuspension,
+    createdAt?: Date,
+    modifiedAt?: Date,
+    deletedAt?: Date,
   ) {
     super(createdAt, modifiedAt, deletedAt);
     this.id = id;
