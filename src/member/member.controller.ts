@@ -10,9 +10,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { MemberService } from './member.service';
-import { TSID } from 'tsid-ts';
 import { CommonPageRequestDto } from '../common/dto/request/common-page.request.dto';
-import { v7 as uuid } from 'uuid';
+import { FindAllMemberRequestDto } from './dto/request/find-all.member.request.dto';
+import { JoinMemberRequestDto } from './dto/request/join.member.request.dto';
+import { UpdateMemberRequestDto } from './dto/request/update.member.request.dto';
 
 @Controller('member')
 export class MemberController {
@@ -20,28 +21,29 @@ export class MemberController {
 
   @Get(':id')
   async find(@Param('id', new ParseUUIDPipe()) id: string) {
-    return 'id: ' + id + ', gen v7: ' + uuid();
+    return this.memberService.find(id);
   }
 
   @Get()
-  async findAll(@Query() page: CommonPageRequestDto) {
-    console.log('find all');
-    console.log(page.page, page.size);
-    return TSID.create().toString();
+  async findAll(
+    @Query() page: CommonPageRequestDto,
+    @Query() param: FindAllMemberRequestDto,
+  ) {
+    return;
   }
 
   @Post()
-  async join(@Body() payload: any) {
+  async join(@Body() payload: JoinMemberRequestDto) {
     return;
   }
 
-  @Put(':id')
-  async update(@Param(':id') id: string) {
+  @Put()
+  async update(@Body() payload: UpdateMemberRequestDto) {
     return;
   }
 
-  @Delete(':id')
-  async withdraw(@Param('id') id: string) {
+  @Delete()
+  async withdraw() {
     return;
   }
 }
