@@ -1,10 +1,10 @@
 export class CommonResponseDto {
-  code: number;
+  statusCode: number;
   message: string;
   data?: any;
 
   constructor(code: number, message: string, data?: any) {
-    this.code = code;
+    this.statusCode = code;
     this.message = message;
     this.data = data;
   }
