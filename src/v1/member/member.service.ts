@@ -8,8 +8,7 @@ import { JoinMemberRequestDto } from './dto/request/join.member.request.dto';
 import { UpdateMemberRequestDto } from './dto/request/update.member.request.dto';
 import { CommonResponseDto } from '../common/dto/response/common.response.dto';
 import * as bcrypt from 'bcrypt';
-import { MemberSuspension } from './entities/member-suspension.entity';
-import { v7 as uuid} from 'uuid';
+import { v7 as uuid } from 'uuid';
 
 @Injectable()
 export class MemberService {
@@ -35,8 +34,6 @@ export class MemberService {
   }
 
   async findAll(page: CommonPageRequestDto, param: FindAllMemberRequestDto) {
-    const memberSuspension: Partial<MemberSuspension> = {};
-
     return;
   }
 

@@ -1,6 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { CommonTime } from '../../common/entities/common-time.entity';
-import { v7 as uuid } from 'uuid';
 import { MemberSuspension } from './member-suspension.entity';
 
 @Entity()
