@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { CommonPageRequestDto } from '../common/dto/request/common-page.request.dto';
@@ -36,7 +37,10 @@ export class MemberController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async join(@Body() payload: JoinMemberRequestDto) {
+  async join(
+    @Body(new ValidationPipe({ transform: true }))
+    payload: JoinMemberRequestDto,
+  ) {
     return this.memberService.join(payload);
   }
 
