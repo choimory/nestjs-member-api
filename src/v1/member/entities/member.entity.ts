@@ -1,10 +1,4 @@
-import {
-  BeforeInsert,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { CommonTime } from '../../common/entities/common-time.entity';
 import { v7 as uuid } from 'uuid';
 import { MemberSuspension } from './member-suspension.entity';
@@ -12,7 +6,7 @@ import { MemberSuspension } from './member-suspension.entity';
 @Entity()
 export class Member extends CommonTime {
   @PrimaryColumn('uuid')
-  id?: string;
+  id: string;
 
   @Column({ unique: true, nullable: false })
   email: string;
@@ -24,28 +18,28 @@ export class Member extends CommonTime {
   password: string;
 
   @Column({ nullable: true })
-  image?: string;
+  image: string;
 
   @Column({ nullable: true })
-  introduce?: string;
+  introduce: string;
 
   @OneToMany(
     () => MemberSuspension,
     (memberSuspension) => memberSuspension.member,
   )
-  memberSuspension?: MemberSuspension;
+  memberSuspension: MemberSuspension;
 
   constructor(
+    createdAt: Date,
+    modifiedAt: Date,
+    deletedAt: Date,
+    id: string,
     email: string,
     nickname: string,
     password: string,
-    id?: string,
-    image?: string,
-    introduce?: string,
-    memberSuspension?: MemberSuspension,
-    createdAt?: Date,
-    modifiedAt?: Date,
-    deletedAt?: Date,
+    image: string,
+    introduce: string,
+    memberSuspension: MemberSuspension,
   ) {
     super(createdAt, modifiedAt, deletedAt);
     this.id = id;
@@ -55,10 +49,5 @@ export class Member extends CommonTime {
     this.image = image;
     this.introduce = introduce;
     this.memberSuspension = memberSuspension;
-  }
-
-  @BeforeInsert()
-  beforeInsert() {
-    this.id = uuid();
   }
 }

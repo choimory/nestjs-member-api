@@ -8,6 +8,8 @@ import { JoinMemberRequestDto } from './dto/request/join.member.request.dto';
 import { UpdateMemberRequestDto } from './dto/request/update.member.request.dto';
 import { CommonResponseDto } from '../common/dto/response/common.response.dto';
 import * as bcrypt from 'bcrypt';
+import { MemberSuspension } from './entities/member-suspension.entity';
+import { v7 as uuid} from 'uuid';
 
 @Injectable()
 export class MemberService {
@@ -33,6 +35,8 @@ export class MemberService {
   }
 
   async findAll(page: CommonPageRequestDto, param: FindAllMemberRequestDto) {
+    const memberSuspension: Partial<MemberSuspension> = {};
+
     return;
   }
 
@@ -44,11 +48,16 @@ export class MemberService {
     );
 
     // payload to entity
-    const member: Member = new Member(payload.email, payload.nickname, hashed);
+    const member: Partial<Member> = {
+      id: uuid(),
+      email: payload.email,
+      nickname: payload.nickname,
+      password: hashed,
+    };
 
     // transaction and save
     return await this.dataSource.transaction(async (manager) => {
-      const result: Member = await manager.save(member);
+      const result: Partial<Member> = await manager.save(Member, member);
 
       // return
       return new CommonResponseDto(
