@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
@@ -33,6 +35,7 @@ export class MemberController {
   }
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   async join(@Body() payload: JoinMemberRequestDto) {
     return this.memberService.join(payload);
   }
@@ -44,6 +47,11 @@ export class MemberController {
 
   @Delete()
   async withdraw() {
+    return;
+  }
+
+  @Post('login')
+  async login() {
     return;
   }
 }
