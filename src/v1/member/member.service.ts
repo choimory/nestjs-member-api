@@ -1,5 +1,5 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { DataSource, DeepPartial, Repository } from 'typeorm';
 import { Member } from './entities/member.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommonPageRequestDto } from '../common/dto/request/common-page.request.dto';
@@ -38,6 +38,23 @@ export class MemberService {
   }
 
   async join(payload: JoinMemberRequestDto): Promise<CommonResponseDto> {
+    // check duplicate
+    const isExist: boolean = await this.memberRepository
+      .createQueryBuilder('m')
+      .select()
+      .where('m.email=:email or m.nickname=:nickname', {
+        email: payload.email,
+        nickname: payload.nickname,
+      })
+      .getExists();
+
+    if (isExist) {
+      throw new HttpException(
+        HttpStatus[HttpStatus.BAD_REQUEST],
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     // bcrypt
     const hashed: string = await bcrypt.hash(
       payload.password,
@@ -45,16 +62,24 @@ export class MemberService {
     );
 
     // payload to entity
-    const member: Partial<Member> = {
+    const member: DeepPartial<Member> = {
       id: uuid(),
       email: payload.email,
       nickname: payload.nickname,
       password: hashed,
+      memberSuspension: [
+        {
+          id: uuid(),
+          reason: 'test',
+          suspendedAt: new Date('2022-01-01'),
+          suspendedTo: new Date('2030-01-01'),
+        },
+      ],
     };
 
     // transaction and save
     return await this.dataSource.transaction(async (manager) => {
-      const result: Partial<Member> = await manager.save(Member, member);
+      const result: DeepPartial<Member> = await manager.save(Member, member);
 
       // return
       return new CommonResponseDto(
