@@ -67,14 +67,6 @@ export class MemberService {
       email: payload.email,
       nickname: payload.nickname,
       password: hashed,
-      memberSuspension: [
-        {
-          id: uuid(),
-          reason: 'test',
-          suspendedAt: new Date('2022-01-01'),
-          suspendedTo: new Date('2030-01-01'),
-        },
-      ],
     };
 
     // transaction and save
