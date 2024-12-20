@@ -2,14 +2,19 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
   HttpCode,
   HttpStatus,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseUUIDPipe,
   Post,
   Put,
   Query,
+  UploadedFile,
+  UseInterceptors,
   ValidationPipe,
 } from '@nestjs/common';
 import { MemberService } from './member.service';
@@ -17,6 +22,7 @@ import { CommonPageRequestDto } from '../common/dto/request/common-page.request.
 import { FindAllMemberRequestDto } from './dto/request/find-all.member.request.dto';
 import { JoinMemberRequestDto } from './dto/request/join.member.request.dto';
 import { UpdateMemberRequestDto } from './dto/request/update.member.request.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('member')
 export class MemberController {
@@ -37,9 +43,20 @@ export class MemberController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(FileInterceptor('image'))
   async join(
     @Body(new ValidationPipe({ transform: true }))
     payload: JoinMemberRequestDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        fileIsRequired: false,
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 100123123015 }),
+          new FileTypeValidator({ fileType: 'image/png' }),
+        ],
+      }),
+    )
+    image: File,
   ) {
     return this.memberService.join(payload);
   }

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty } from "class-validator";
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class JoinMemberRequestDto {
   @IsEmail()
@@ -9,7 +9,6 @@ export class JoinMemberRequestDto {
 
   @IsNotEmpty()
   password: string;
-  //image:any;
   introduce: string;
 
   constructor(
