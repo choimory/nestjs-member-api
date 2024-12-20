@@ -39,18 +39,13 @@ export class MemberService {
 
   async join(payload: JoinMemberRequestDto): Promise<CommonResponseDto> {
     // check duplicate
-    const isExist: boolean = await this.memberRepository
-      .createQueryBuilder('m')
-      .select()
-      .where('m.email=:email or m.nickname=:nickname', {
-        email: payload.email,
-        nickname: payload.nickname,
-      })
-      .getExists();
+    const isExist: boolean = await this.memberRepository.exists({
+      where: [{ email: payload.email }, { nickname: payload.nickname }],
+    });
 
     if (isExist) {
       throw new HttpException(
-        HttpStatus[HttpStatus.BAD_REQUEST],
+        'duplicate email or nickname',
         HttpStatus.BAD_REQUEST,
       );
     }
