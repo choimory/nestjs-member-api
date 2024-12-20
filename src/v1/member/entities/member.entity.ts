@@ -25,8 +25,9 @@ export class Member extends CommonTime {
   @OneToMany(
     () => MemberSuspension,
     (memberSuspension) => memberSuspension.member,
+    { cascade: true },
   )
-  memberSuspension: MemberSuspension;
+  memberSuspension: MemberSuspension[];
 
   constructor(
     createdAt: Date,
@@ -38,7 +39,7 @@ export class Member extends CommonTime {
     password: string,
     image: string,
     introduce: string,
-    memberSuspension: MemberSuspension,
+    memberSuspension: MemberSuspension[],
   ) {
     super(createdAt, modifiedAt, deletedAt);
     this.id = id;
