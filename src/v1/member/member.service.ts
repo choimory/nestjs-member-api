@@ -50,22 +50,29 @@ export class MemberService {
       );
     }
 
-    // bcrypt
-    const hashed: string = await bcrypt.hash(
-      payload.password,
-      await bcrypt.genSalt(),
-    );
-
-    // payload to entity
-    const member: DeepPartial<Member> = {
-      id: uuid(),
-      email: payload.email,
-      nickname: payload.nickname,
-      password: hashed,
-    };
-
     // transaction and save
     return await this.dataSource.transaction(async (manager) => {
+      //TODO file upload
+      let path = 'default';
+      if (payload?.image) {
+        path = '';
+      }
+
+      // bcrypt
+      const hashed: string = await bcrypt.hash(
+        payload.password,
+        await bcrypt.genSalt(),
+      );
+
+      // payload to entity
+      const member: DeepPartial<Member> = {
+        id: uuid(),
+        email: payload.email,
+        nickname: payload.nickname,
+        password: hashed,
+        image: path,
+      };
+
       const result: DeepPartial<Member> = await manager.save(Member, member);
 
       // return

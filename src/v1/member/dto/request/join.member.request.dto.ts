@@ -9,17 +9,20 @@ export class JoinMemberRequestDto {
 
   @IsNotEmpty()
   password: string;
+  image: File;
   introduce: string;
 
   constructor(
     email: string,
     nickname: string,
     password: string,
+    image: File,
     introduce: string,
   ) {
     this.email = email;
     this.nickname = nickname;
     this.password = password;
+    this.image = image;
     this.introduce = introduce;
   }
 }

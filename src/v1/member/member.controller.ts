@@ -2,11 +2,13 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
   HttpCode,
   HttpStatus,
+  MaxFileSizeValidator,
   Param,
-  ParseFilePipeBuilder,
+  ParseFilePipe,
   ParseUUIDPipe,
   Post,
   Put,
@@ -46,17 +48,17 @@ export class MemberController {
     @Body(new ValidationPipe({ transform: true }))
     payload: JoinMemberRequestDto,
     @UploadedFile(
-      new ParseFilePipeBuilder()
-        .addFileTypeValidator({ fileType: 'image/png' })
-        .addMaxSizeValidator({ maxSize: 1243234592 })
-        .build({
-          errorHttpStatusCode: HttpStatus.BAD_REQUEST,
-          fileIsRequired: false,
-        }),
+      new ParseFilePipe({
+        fileIsRequired: true,
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 123123123123 }),
+          new FileTypeValidator({ fileType: 'image/png' }),
+        ],
+      }),
     )
     image: File,
   ) {
-    return this.memberService.join(payload);
+    return this.memberService.join({ ...payload, image });
   }
 
   @Put()
