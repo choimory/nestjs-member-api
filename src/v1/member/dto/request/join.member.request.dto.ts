@@ -2,15 +2,15 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class JoinMemberRequestDto {
   @IsEmail()
-  email: string;
+  readonly email: string;
 
   @IsNotEmpty()
-  nickname: string;
+  readonly nickname: string;
 
   @IsNotEmpty()
-  password: string;
-  image: File;
-  introduce: string;
+  readonly password: string;
+  readonly image: File;
+  readonly introduce: string;
 
   constructor(
     email: string,
