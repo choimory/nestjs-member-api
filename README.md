@@ -1,39 +1,32 @@
 # 개요
 
-- 회원 API는 백엔드로 다룰수 있는 많은 내용이 담겨 있음
-- 간단한 회원 SNS 구현
+- 회원 API를 개발하며 백엔드로 다룰수 있는 많은 내용들을 다뤄보자
 
 # 인증
 
 - 회원 가입 및 로그인 패스워드 암호화
 - CORS
 - bcrypt
-  - Spring security
   - bcrypt, @types/bcrypt
 - JWT or Session
-  - JJWT
   - Nestjs JWT
 - OAuth2
-  - Spring security
   - Nest.js Passport
 
 # 권한
 
 - 회원 권한별 접근처리
-- Spring security
 - Nest.js auth, guard
 
 # 타입
 
 - 타입을 DB화하여 관리할 수도 있고, 코드의 enum으로 관리할 수도 있다
 - 회원 역할(DB), 이미지 타입(enum)
-- Java Kotlin enum
 - TypeScript enum, union type as const(권장)
 
 # 파일 입출력, 스토리지, CDN
 
 - 회원 프로필 사진, 게시물 첨부 이미지 파일 업로드/다운로드 구현
-- Spring MultiPartFile
 - Nestjs Multer
 - 스토리지 저장
 - 리사이징
@@ -42,7 +35,6 @@
 # 이메일 인증
 
 - 회원가입 인증메일
-- Java mail sender
 - Nestjs mailer
 - Redis
   - 인증번호를 TTL(time to live)걸어서 저장시키면 시간내에 안올시 세션 죽음
@@ -92,7 +84,7 @@
 - 식별자로 tsid 사용 → UUIDv7으로 변경 (uuidv7도 시간정렬 지원하며 nestjs에서 검증 등 지원함)
 - user와 role 설계
   - 역할과 권한의 관계는 케이스마다 다른데, 보통 다대다가 일반적이며 여기서도 다대다로 설계하기로 함
-  - user와 role을 N:N으로 설계함
+  1. user와 role을 N:N으로 설계함
     - 왜 다대다로 설계하는가
     - 역할은 항상 or가 아닌 and인 케이스도 나오기 때문
     - member||admin이 아닌 member&&admin이 나올수 있고 member&&moderator도 나올수 있음
@@ -100,7 +92,7 @@
     - 역할들을 모듈화해서, 해당하는 역할들을 다 가지는것
     - role 중심의 설계
     - 해당 user의 role이 해당 액션을 수행할 수 있는 role을 보유하고 있는지를 확인함
-  - user와 role을 1:1로 설계함
+  2. user와 role을 1:1로 설계함
     - 무조건 단일한 역할만 필요할때
     - role이 계층적일때 (guest<member<admin…)
     - 추후 변경시 유연히 대처하지 못할수 있고 확장이 곤란할 수 있음
@@ -108,10 +100,10 @@
     - 해당 user의 role이 해당 액션을 수행할 permisson을 가지고 있는지를 확인함
   - permission 설계
     - member의 권한이 123, member plus의 권한이 1234, admin의 권한이 1234567일때
-    - permisson을 member(123), member plus(4), admin(567)로 저장한다
+    1. permisson을 member(123), member plus(4), admin(567)로 저장한다
       - user와 role이 N:N일때만 가능
       - e.g. member123+member_plus+admin567을 모두 저장해서 1234567을 모두 가지게 함
-    - permission을 member(123), member plus(1234), admin(1234567)로 저장한다
+    2. permission을 member(123), member plus(1234), admin(1234567)로 저장한다
       - user와 role이 1:1, N:N일때 모두 가능
       - member123 + member_plus1234 + admin1234567을 저장해서 1234567을 모두 가지게함
 

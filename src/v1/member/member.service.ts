@@ -1,5 +1,5 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { DataSource, DeepPartial, Repository } from 'typeorm';
 import { Member } from './entities/member.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommonPageRequestDto } from '../common/dto/request/common-page.request.dto';
@@ -8,6 +8,7 @@ import { JoinMemberRequestDto } from './dto/request/join.member.request.dto';
 import { UpdateMemberRequestDto } from './dto/request/update.member.request.dto';
 import { CommonResponseDto } from '../common/dto/response/common.response.dto';
 import * as bcrypt from 'bcrypt';
+import { v7 as uuid } from 'uuid';
 
 @Injectable()
 export class MemberService {
@@ -37,18 +38,42 @@ export class MemberService {
   }
 
   async join(payload: JoinMemberRequestDto): Promise<CommonResponseDto> {
-    // bcrypt
-    const hashed: string = await bcrypt.hash(
-      payload.password,
-      await bcrypt.genSalt(),
-    );
+    // check duplicate
+    const isExist: boolean = await this.memberRepository.exists({
+      where: [{ email: payload.email }, { nickname: payload.nickname }],
+    });
 
-    // payload to entity
-    const member: Member = new Member(payload.email, payload.nickname, hashed);
+    if (isExist) {
+      throw new HttpException(
+        'duplicate email or nickname',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     // transaction and save
     return await this.dataSource.transaction(async (manager) => {
-      const result: Member = await manager.save(member);
+      //TODO file upload
+      let path = 'default';
+      if (payload?.image) {
+        path = '';
+      }
+
+      // bcrypt
+      const hashed: string = await bcrypt.hash(
+        payload.password,
+        await bcrypt.genSalt(),
+      );
+
+      // payload to entity
+      const member: DeepPartial<Member> = {
+        id: uuid(),
+        email: payload.email,
+        nickname: payload.nickname,
+        password: hashed,
+        image: path,
+      };
+
+      const result: DeepPartial<Member> = await manager.save(Member, member);
 
       // return
       return new CommonResponseDto(

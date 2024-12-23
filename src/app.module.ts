@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MemberModule } from './member/member.module';
+import { MemberModule } from './v1/member/member.module';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigModuleOptions } from '@nestjs/config/dist/interfaces/config-module-options.interface';
 import Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { APP_FILTER } from '@nestjs/core';
+import { CommonExceptionFilter } from './v1/common/exception/common-exception.filter';
 
 @Module({
   imports: [
@@ -51,6 +53,9 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
     } as TypeOrmModuleOptions),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    { provide: APP_FILTER, useClass: CommonExceptionFilter }, //common exception
+  ],
 })
 export class AppModule {}
