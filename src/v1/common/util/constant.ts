@@ -1,0 +1,4 @@
+// 용량 단위 상수 정의
+export const BYTES_IN_KB = 1024;
+export const BYTES_IN_MB = 1024 * BYTES_IN_KB; // 1MB = 1024KB
+export const BYTES_IN_GB = 1024 * BYTES_IN_MB; // 1GB = 1024MB

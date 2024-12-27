@@ -23,6 +23,7 @@ import { FindAllMemberRequestDto } from './dto/request/find-all.member.request.d
 import { JoinMemberRequestDto } from './dto/request/join.member.request.dto';
 import { UpdateMemberRequestDto } from './dto/request/update.member.request.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { BYTES_IN_MB } from '../common/util/constant';
 
 @Controller('member')
 export class MemberController {
@@ -51,8 +52,8 @@ export class MemberController {
       new ParseFilePipe({
         fileIsRequired: true,
         validators: [
-          new MaxFileSizeValidator({ maxSize: 123123123123 }),
-          new FileTypeValidator({ fileType: 'image/png' }),
+          new MaxFileSizeValidator({ maxSize: BYTES_IN_MB * 10 }),
+          new FileTypeValidator({ fileType: 'image/*' }),
         ],
       }),
     )
